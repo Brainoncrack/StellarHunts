@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "adv-storage-migration-order",
+  "title": "Migrate Without Losing Rows",
+  "description": "A stored key variant is being renamed. Existing rows live under the old key, and readers in the wild still expect the contract to work throughout the migration. Choose the safe ordering.",
+  "difficulty": "hard",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "Renaming a persisted `DataKey` variant creates a brand-new storage key because the variant name is part of the key. Which migration order is safe for existing rows?",
+    "options": [
+      "Delete the old key first, then write the rows under the new key.",
+      "Read each row from the old key, write it under the new key, verify the new rows, then remove the old key.",
+      "Overwrite the old key in place with the new serialized shape.",
+      "Ignore the old key entirely and let readers fail until players replay their progress."
+    ]
+  },
+  "solution": "Read each row from the old key, write it under the new key, verify the new rows, then remove the old key.",
+  "solutionType": "plain",
+  "hint": "A migration must be resumable and must never leave a window where a row exists nowhere. Copy first, verify, then delete; or keep both keys and fall back lazily on read until every row has been migrated. Deleting first or overwriting in place destroys data if the transaction fails partway through.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-06",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Migration Planner" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "storage", "versioning", "migration"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Copy, verify, then delete",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 1 },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Delete-first loses rows on failure",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 0 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "In-place overwrite corrupts old readers",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 2 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Abandoning rows breaks player progress",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 3 },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

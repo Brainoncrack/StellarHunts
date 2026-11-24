@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "id": "match-fba-quorum",
+  "title": "Quorum Intersection",
+  "description": "Choose the concept that helps FBA networks avoid divergent ledgers.",
+  "difficulty": "medium",
+  "match_tier": "intermediate",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "Which condition requires two quorums in an FBA network to share at least one validating node?",
+    "options": ["Quorum intersection", "Inflation", "Mempool pruning", "Asset issuance"]
+  },
+  "solution": "Quorum intersection",
+  "solutionType": "plain",
+  "hint": "It is a property of the graph formed by validator quorum slices.",
+  "tags": ["stellar", "consensus", "fba"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Consensus property", "input": { "topic": "fba" }, "expectedOutput": { "answer": "Quorum intersection" } },
+    { "title": "Ledger safety", "input": { "goal": "avoid split" }, "expectedOutput": { "answer": "Quorum intersection" } },
+    { "title": "Validator slices", "input": { "component": "quorum" }, "expectedOutput": { "answer": "Quorum intersection" } },
+    { "title": "Network property", "input": { "level": "network" }, "expectedOutput": { "answer": "Quorum intersection" } }
+  ]
+}

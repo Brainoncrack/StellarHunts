@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "id": "match-soroban-auth",
+  "title": "Require Authorization",
+  "description": "Identify the Soroban authorization call that protects a player action.",
+  "difficulty": "medium",
+  "match_tier": "intermediate",
+  "type": "code",
+  "content": {
+    "prompt": "Add the missing address authorization call before minting a badge.",
+    "initialCode": "player.",
+    "language": "rust"
+  },
+  "solution": "player.require_auth()",
+  "solutionType": "plain",
+  "hint": "Soroban Address has a method that verifies the invocation is authorized.",
+  "tags": ["soroban", "security", "rust"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Player address", "input": { "address": "player" }, "expectedOutput": { "answer": "player.require_auth()" } },
+    { "title": "Admin address", "input": { "address": "admin" }, "expectedOutput": { "answer": "admin.require_auth()" } },
+    { "title": "Merchant address", "input": { "address": "merchant" }, "expectedOutput": { "answer": "merchant.require_auth()" } },
+    { "title": "Treasury address", "input": { "address": "treasury" }, "expectedOutput": { "answer": "treasury.require_auth()" } }
+  ]
+}

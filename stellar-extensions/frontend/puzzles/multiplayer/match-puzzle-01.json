@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "id": "match-stellar-native-asset",
+  "title": "Name the Native Asset",
+  "description": "A fast Stellar fundamentals check for beginner head-to-head matches.",
+  "difficulty": "easy",
+  "match_tier": "beginner",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "Which asset is Stellar's native asset?",
+    "options": ["XLM", "USDC", "BTC", "ETH"]
+  },
+  "solution": "XLM",
+  "solutionType": "plain",
+  "hint": "Its on-ledger name is native and it is used to pay transaction fees.",
+  "tags": ["stellar", "fundamentals", "assets"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Native asset", "input": { "question": "native asset" }, "expectedOutput": { "answer": "XLM" } },
+    { "title": "Not USDC", "input": { "question": "native asset" }, "expectedOutput": { "answer": "XLM" } },
+    { "title": "Not BTC", "input": { "question": "native asset" }, "expectedOutput": { "answer": "XLM" } },
+    { "title": "Not ETH", "input": { "question": "native asset" }, "expectedOutput": { "answer": "XLM" } }
+  ]
+}

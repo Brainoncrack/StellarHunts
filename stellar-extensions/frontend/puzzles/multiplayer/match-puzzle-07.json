@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-ledger-sequence",
+  "title": "Sequence Number Range",
+  "description": "Choose the valid ledger sequence window for an advanced competitive puzzle.",
+  "difficulty": "hard",
+  "match_tier": "advanced",
+  "type": "number",
+  "content": {
+    "prompt": "A transaction minTime is 120 and maxTime is 180. What is the inclusive size of this time window in seconds?"
+  },
+  "solution": "61",
+  "solutionType": "numeric_exact",
+  "hint": "For inclusive bounds, add 1 to maxTime minus minTime.",
+  "tags": ["stellar", "transactions", "timebounds"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Window 120-180", "input": { "min": 120, "max": 180 }, "expectedOutput": { "answer": "61" } },
+    { "title": "One second window", "input": { "min": 10, "max": 10 }, "expectedOutput": { "answer": "1" } },
+    { "title": "Ten seconds", "input": { "min": 20, "max": 29 }, "expectedOutput": { "answer": "10" } },
+    { "title": "Adjacent bounds", "input": { "min": 5, "max": 6 }, "expectedOutput": { "answer": "2" } }
+  ]
+}

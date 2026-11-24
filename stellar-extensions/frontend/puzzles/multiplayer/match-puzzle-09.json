@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-merkle-proof",
+  "title": "Merkle Proof Depth",
+  "description": "Calculate the minimum Merkle proof length for a uniformly large tree.",
+  "difficulty": "master",
+  "match_tier": "expert",
+  "type": "math",
+  "content": {
+    "prompt": "A Merkle tree has 1024 leaves. How many sibling hashes are needed to prove one leaf?"
+  },
+  "solution": "10",
+  "solutionType": "numeric_exact",
+  "hint": "A perfectly balanced tree with 1024 leaves has log2(1024) levels.",
+  "tags": ["cryptography", "merkle", "proofs"],
+  "isActive": true,
+  "testCases": [
+    { "title": "1024 leaves", "input": { "leaves": 1024 }, "expectedOutput": { "answer": "10" } },
+    { "title": "1 leaf", "input": { "leaves": 1 }, "expectedOutput": { "answer": "0" } },
+    { "title": "2 leaves", "input": { "leaves": 2 }, "expectedOutput": { "answer": "1" } },
+    { "title": "256 leaves", "input": { "leaves": 256 }, "expectedOutput": { "answer": "8" } }
+  ]
+}

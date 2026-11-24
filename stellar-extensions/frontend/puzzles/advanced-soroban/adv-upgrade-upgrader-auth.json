@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "id": "adv-upgrade-upgrader-auth",
+  "title": "Lock the Upgrade Door",
+  "description": "A live StellarHunts contract exposes an upgrade entrypoint that swaps its WASM. The entrypoint reads the designated upgrader from storage but never checks that the caller is that address. Anyone can now replace the code.",
+  "difficulty": "hard",
+  "type": "code",
+  "content": {
+    "prompt": "Complete the upgrade entrypoint so that only the address stored as the upgrader can replace the contract code.\n\npub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) {\n    let upgrader = Self::get_upgrader(env.clone());\n    // Missing line here\n    env.deployer().update_current_contract_wasm(new_wasm_hash);\n}",
+    "initialCode": "upgrader.",
+    "language": "rust"
+  },
+  "solution": "upgrader.require_auth()",
+  "solutionType": "plain",
+  "hint": "Reading the upgrader from storage proves who is *allowed* to upgrade, not who is calling. Call `require_auth` on the value you just read, not on a caller-supplied argument, and do it before the WASM update so the code can never be replaced first. Prefer a single-purpose upgrader role over the general admin role.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-03",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Upgrade Gatekeeper" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "upgradeability", "auth", "security", "rust"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Stored upgrader authorizes the swap",
+      "validationMode": "exact_match",
+      "input": { "answer": "upgrader.require_auth()" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Admin is not necessarily the upgrader",
+      "validationMode": "exact_match",
+      "input": { "answer": "admin.require_auth()" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "A caller-supplied address is attacker-controlled",
+      "validationMode": "exact_match",
+      "input": { "answer": "new_wasm_hash.require_auth()" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "The invoker is not the stored upgrader",
+      "validationMode": "exact_match",
+      "input": { "answer": "env.invoker().require_auth()" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "id": "adv-storage-schema-version",
+  "title": "Detect Legacy Storage",
+  "description": "An operator needs to know whether a deployed contract predates storage versioning. The schema version lives in instance storage, and a missing entry is defined to mean version 0.",
+  "difficulty": "hard",
+  "type": "code",
+  "content": {
+    "prompt": "Fill in the storage key so a missing entry safely falls back to version 0 instead of panicking.\n\nlet version: u32 = env\n    .storage()\n    .instance()\n    .get(&DataKey::???)\n    .unwrap_or(0);",
+    "initialCode": "DataKey::",
+    "language": "rust"
+  },
+  "solution": "SchemaVersion",
+  "solutionType": "plain",
+  "hint": "The contract writes its current schema version during `init` under a dedicated `DataKey` variant and exposes it through `get_schema_version`. A deployment that predates versioning has no such entry, so the reader must default to 0 rather than treat absence as an error. Never reuse this key for a different meaning.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-05",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Schema Cartographer" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "storage", "versioning", "migration", "rust"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Schema version key",
+      "validationMode": "exact_match",
+      "input": { "answer": "SchemaVersion" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Admin key has a different meaning",
+      "validationMode": "exact_match",
+      "input": { "answer": "Admin" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Question count is not a schema marker",
+      "validationMode": "exact_match",
+      "input": { "answer": "QuestionCount" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Version is a dedicated key, not a level plan",
+      "validationMode": "exact_match",
+      "input": { "answer": "QuestionPerLevel" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

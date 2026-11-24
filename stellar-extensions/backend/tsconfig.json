@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2021",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "types": ["node", "jest"],
+    "typeRoots": [
+      "../../backend/node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "paths": {
+      "@nestjs/typeorm": ["../../backend/node_modules/@nestjs/typeorm"]
+    }
+  },
+  "include": ["src/**/*.ts", "../tests/**/*.ts"]
+}

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "adv-factory-salt-deploy",
+  "title": "Deploy a Child Contract Deterministically",
+  "description": "A game factory contract deploys one puzzle-instance contract per season. Off-chain services must be able to predict each instance's address from the factory address and a season salt before the deployment transaction lands.",
+  "difficulty": "hard",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "Which deployer call deploys a child contract at an address derived from the current contract's address and a season salt?",
+    "options": [
+      "env.deployer().with_current_contract(salt).deploy(wasm_hash)",
+      "env.deployer().with_address(salt).deploy(wasm_hash)",
+      "env.deployer().deploy(wasm_hash)",
+      "env.deployer().update_current_contract_wasm(wasm_hash).with_salt(salt)"
+    ]
+  },
+  "solution": "env.deployer().with_current_contract(salt).deploy(wasm_hash)",
+  "solutionType": "plain",
+  "hint": "The deployer is scoped before deployment. `with_current_contract(salt)` makes the current contract the deployer and uses the salt for address derivation, so `deploy(wasm_hash)` produces a predictable child address. Without that scope, deployment is not tied to the factory address; `update_current_contract_wasm` upgrades the running contract instead of creating a child.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-10",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Factory Architect" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "composition", "deployment", "factory", "modularity"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Salt scoped to the current contract",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 0 },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "with_address is not a deployer scope",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 1 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Unscoped deploy has no deterministic parent",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 2 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Upgrades do not create child contracts",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 3 },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

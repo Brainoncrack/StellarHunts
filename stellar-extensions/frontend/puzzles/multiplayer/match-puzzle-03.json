@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-account-balance",
+  "title": "Minimum Balance",
+  "description": "Use Stellar account reserve rules to quickly identify a minimum balance.",
+  "difficulty": "easy",
+  "match_tier": "beginner",
+  "type": "number",
+  "content": {
+    "prompt": "A Stellar account has a base reserve of 0.5 XLM and one trustline. How many XLM is its minimum balance?"
+  },
+  "solution": "1",
+  "solutionType": "numeric_exact",
+  "hint": "Minimum balance is 0.5 XLM plus 0.5 XLM for the trustline.",
+  "tags": ["stellar", "accounts", "reserves"],
+  "isActive": true,
+  "testCases": [
+    { "title": "No entries", "input": { "baseReserve": 0.5, "entries": 0 }, "expectedOutput": { "answer": "0.5" } },
+    { "title": "One trustline", "input": { "baseReserve": 0.5, "entries": 1 }, "expectedOutput": { "answer": "1" } },
+    { "title": "Two entries", "input": { "baseReserve": 0.5, "entries": 2 }, "expectedOutput": { "answer": "1.5" } },
+    { "title": "Three entries", "input": { "baseReserve": 0.5, "entries": 3 }, "expectedOutput": { "answer": "2" } }
+  ]
+}

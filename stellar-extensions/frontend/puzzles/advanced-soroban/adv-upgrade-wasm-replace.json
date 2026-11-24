@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "id": "adv-upgrade-wasm-replace",
+  "title": "Swap the Code, Keep the State",
+  "description": "You uploaded a new WASM hash to the network. The next step is to point the existing contract at it without changing the contract ID or losing its storage.",
+  "difficulty": "hard",
+  "type": "code",
+  "content": {
+    "prompt": "Complete the host call that replaces the running contract's code while keeping the same contract address and storage.\n\nenv.deployer().???",
+    "initialCode": "env.deployer().",
+    "language": "rust"
+  },
+  "solution": "update_current_contract_wasm",
+  "solutionType": "plain",
+  "hint": "The deployer host provides separate operations for uploading code, deploying a new instance, and swapping the code of the contract you are currently executing in. Only the last operation keeps the current contract address and its storage. Pair it with the upgrader role check and emit an upgrade event so indexers can follow the change.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-04",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "WASM Surgeon" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "upgradeability", "wasm", "deployer"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Replace current contract WASM",
+      "validationMode": "exact_match",
+      "input": { "answer": "update_current_contract_wasm" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Deploying creates a new address",
+      "validationMode": "exact_match",
+      "input": { "answer": "deploy" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Installing only uploads bytecode",
+      "validationMode": "exact_match",
+      "input": { "answer": "install" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "The operation name is update_current_contract_wasm",
+      "validationMode": "exact_match",
+      "input": { "answer": "update_current_contract" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

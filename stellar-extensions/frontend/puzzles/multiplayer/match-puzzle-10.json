@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-soroban-storage",
+  "title": "Persistent Storage Footprint",
+  "description": "Estimate a Soroban persistent-storage rent outcome for expert play.",
+  "difficulty": "master",
+  "match_tier": "expert",
+  "type": "logic",
+  "content": {
+    "prompt": "A persistent entry is 8 bytes, current rent is 5 stroops per byte, and a 10-byte key has no separate storage charge. What rent is charged?"
+  },
+  "solution": "40",
+  "solutionType": "numeric_exact",
+  "hint": "Multiply the entry size by the rent rate.",
+  "tags": ["soroban", "storage", "rent"],
+  "isActive": true,
+  "testCases": [
+    { "title": "8 bytes", "input": { "size": 8, "rate": 5 }, "expectedOutput": { "answer": "40" } },
+    { "title": "16 bytes", "input": { "size": 16, "rate": 5 }, "expectedOutput": { "answer": "80" } },
+    { "title": "10 bytes at 3 stroops", "input": { "size": 10, "rate": 3 }, "expectedOutput": { "answer": "30" } },
+    { "title": "Zero bytes", "input": { "size": 0, "rate": 5 }, "expectedOutput": { "answer": "0" } }
+  ]
+}

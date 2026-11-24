@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-stroop-conversion",
+  "title": "Stroops to Lumens",
+  "description": "Convert an exact Stroop value to XLM under a beginner time limit.",
+  "difficulty": "easy",
+  "match_tier": "beginner",
+  "type": "math",
+  "content": {
+    "prompt": "One XLM is 10,000,000 stroops. Convert 2,500,000 stroops to XLM."
+  },
+  "solution": "0.25",
+  "solutionType": "numeric_exact",
+  "hint": "Divide the Stroop value by 10,000,000.",
+  "tags": ["stellar", "math", "stroops"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Quarter lumens", "input": { "stroops": 2500000 }, "expectedOutput": { "answer": "0.25" } },
+    { "title": "Half lumens", "input": { "stroops": 5000000 }, "expectedOutput": { "answer": "0.5" } },
+    { "title": "Whole lumen", "input": { "stroops": 10000000 }, "expectedOutput": { "answer": "1" } },
+    { "title": "Small amount", "input": { "stroops": 500000 }, "expectedOutput": { "answer": "0.05" } }
+  ]
+}

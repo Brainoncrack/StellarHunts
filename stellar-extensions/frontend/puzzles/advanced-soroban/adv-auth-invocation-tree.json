@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "adv-auth-invocation-tree",
+  "title": "Who Authorizes a Nested Call?",
+  "description": "Contract A calls contract B, and B calls `player.require_auth()`. The player signed only the transaction that invokes A. Select the statement that correctly describes how Soroban resolves the requirement.",
+  "difficulty": "hard",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "A player submits one transaction that invokes contract A. A cross-contract call invokes contract B, and B executes `player.require_auth()`. Which statement is true?",
+    "options": [
+      "No player authorization is needed because B is reached through A rather than the transaction root.",
+      "The player must have authorized an invocation entry covering the call path to B, either directly or through a sub-invocation entry.",
+      "`require_auth` inside a nested call is ignored unless B is the transaction's root contract.",
+      "Only the contract address of A can satisfy the player's authorization entry."
+    ]
+  },
+  "solution": "The player must have authorized an invocation entry covering the call path to B, either directly or through a sub-invocation entry.",
+  "solutionType": "plain",
+  "hint": "Authorization is evaluated against the whole invocation tree, not just the transaction's root contract. A root-level authorization may be reused only when the required invocation is part of that authorized subtree; otherwise the signer must include a sub-invocation entry that matches the nested call, its contract, and its arguments. Contract addresses do not inherit a player's signature.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-02",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Invocation Tree Reader" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "auth", "cross-contract", "invocation-tree"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Subtree authorization is required",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 1 },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Nested calls still enforce auth",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 0 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Nested require_auth is enforced",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 2 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Contract address cannot sign for the player",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 3 },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

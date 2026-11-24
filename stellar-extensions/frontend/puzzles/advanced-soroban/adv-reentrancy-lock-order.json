@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "adv-reentrancy-lock-order",
+  "title": "Guard the External Call",
+  "description": "A withdraw entrypoint updates a balance and then calls an external token contract. Soroban does not stop a malicious token contract from calling back into the game. Choose the ordering that prevents the callback from draining the balance twice.",
+  "difficulty": "hard",
+  "type": "multiple_choice",
+  "content": {
+    "prompt": "Which sequence correctly combines checks-effects-interactions with a storage-backed reentrancy lock around the external token call?",
+    "options": [
+      "Set the lock, call the token contract, check the lock, then clear it.",
+      "Check that the lock is clear, set the lock, apply the balance change, call the token contract, then clear the lock on both the success and error paths.",
+      "Call the token contract first, then check the lock and update the balance.",
+      "Rely on `require_auth` from the player; an authorized caller can never re-enter."
+    ]
+  },
+  "solution": "Check that the lock is clear, set the lock, apply the balance change, call the token contract, then clear the lock on both the success and error paths.",
+  "solutionType": "plain",
+  "hint": "Reentrancy protection needs state that is written *before* the external call and read by the reentrant invocation. Apply the balance change before the call (checks-effects-interactions), persist the lock, and clear it after the call returns or fails so a single failure cannot brick the entrypoint. Authorization proves who called; it does not prove the call is not re-entering.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-08",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Reentrancy Sentinel" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "security", "reentrancy", "cross-contract"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Lock, effect, external call, unlock",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 1 },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Checking after the call is too late",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 0 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Calling out before updating state enables double spend",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 2 },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Authorization does not prevent reentrancy",
+      "validationMode": "exact_match",
+      "input": { "selectedIndex": 3 },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

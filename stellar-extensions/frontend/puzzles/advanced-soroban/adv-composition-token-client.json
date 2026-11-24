@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "id": "adv-composition-token-client",
+  "title": "Compose Through a Client",
+  "description": "The game contract needs to read a player's token balance and later transfer a fee. Contracts cannot call another contract's Rust functions in-process; composition goes through a generated client that dispatches host calls.",
+  "difficulty": "hard",
+  "type": "code",
+  "content": {
+    "prompt": "Complete the constructor for the client generated from the token interface module, binding it to the token contract address.\n\nlet token = token::???;\nlet balance = token.balance(&player);",
+    "initialCode": "token::",
+    "language": "rust"
+  },
+  "solution": "Client::new(&env, &token_id)",
+  "solutionType": "plain",
+  "hint": "A `#[contractclient]` module exposes a `Client` whose constructor takes the environment and the target contract's `Address`. Calls on that client are cross-contract host calls, so they cost resources and can fail; import the crate that defines the interface rather than re-declaring it. Directly invoking the other contract's Rust functions would only run local code and touch no state.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-09",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Contract Composer" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "composition", "cross-contract", "client", "rust"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Generated client bound to the token address",
+      "validationMode": "exact_match",
+      "input": { "answer": "Client::new(&env, &token_id)" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "No environment means no host access",
+      "validationMode": "exact_match",
+      "input": { "answer": "Client::new(&token_id)" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "The client is not constructed from the caller",
+      "validationMode": "exact_match",
+      "input": { "answer": "Client::new(&env, &player)" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "A client is not a contract module function",
+      "validationMode": "exact_match",
+      "input": { "answer": "balance(&env, &player)" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

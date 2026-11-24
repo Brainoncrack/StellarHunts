@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "id": "adv-storage-ttl-extension",
+  "title": "Keep Player Records Alive",
+  "description": "Player progress is stored in a persistent entry. Activity is bursty, so the entry can expire between sessions and take a player's progress with it. The contract must renew the entry's time-to-live on access.",
+  "difficulty": "hard",
+  "type": "text",
+  "content": {
+    "prompt": "Which method on `env.storage().persistent()` extends a persistent entry's TTL, given a key, a threshold below which it renews, and a target TTL?\n\nenv.storage().persistent().???(&DataKey::PlayerProgress(player), THRESHOLD, EXTEND_TO);",
+    "language": "rust"
+  },
+  "solution": "extend_ttl",
+  "solutionType": "plain",
+  "hint": "Persistent entries have their own TTL, independent of the contract instance. The renewal method takes the key plus two ledger counts: it does nothing while the remaining TTL is above the threshold and extends to the target once it falls below. Instance storage uses a two-argument variant without a key. There is no `bump` method in Soroban storage.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-07",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "TTL Warden" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "storage", "ttl", "persistent"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Persistent entries use extend_ttl",
+      "validationMode": "exact_match",
+      "input": { "answer": "extend_ttl" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "There is no bump method",
+      "validationMode": "exact_match",
+      "input": { "answer": "bump" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "TTL is not renewed with set_ttl",
+      "validationMode": "exact_match",
+      "input": { "answer": "set_ttl" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Extend is only the prefix of the method",
+      "validationMode": "exact_match",
+      "input": { "answer": "extend" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "match-trustline-limit",
+  "title": "Trustline Limit Check",
+  "description": "Determine whether an account can receive an asset after checking a trustline limit.",
+  "difficulty": "medium",
+  "match_tier": "intermediate",
+  "type": "logic",
+  "content": {
+    "prompt": "A trustline has a limit of 100 and its current balance is 80. Can a 25-unit payment be received?"
+  },
+  "solution": "No",
+  "solutionType": "plain",
+  "hint": "The resulting balance would be 105, exceeding the limit of 100.",
+  "tags": ["stellar", "trustlines", "logic"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Over limit", "input": { "limit": 100, "balance": 80, "payment": 25 }, "expectedOutput": { "answer": "No" } },
+    { "title": "Within limit", "input": { "limit": 100, "balance": 80, "payment": 20 }, "expectedOutput": { "answer": "Yes" } },
+    { "title": "Exact limit", "input": { "limit": 100, "balance": 75, "payment": 25 }, "expectedOutput": { "answer": "Yes" } },
+    { "title": "No room", "input": { "limit": 50, "balance": 50, "payment": 1 }, "expectedOutput": { "answer": "No" } }
+  ]
+}

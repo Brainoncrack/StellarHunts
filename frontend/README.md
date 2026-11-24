@@ -12,6 +12,7 @@ The frontend for StellarHunts, a gamified blockchain application built on **Stel
 | Zustand | Global state management |
 | TanStack Query | Server state and caching |
 | `@stellar/freighter-api` | Freighter browser-extension wallet integration |
+| `@walletconnect/sign-client` | WalletConnect v2 QR pairing (set `NEXT_PUBLIC_WC_PROJECT_ID`) |
 | `@stellar/stellar-sdk` | Stellar / Soroban transaction building |
 | NextAuth.js | Authentication (OAuth, wallet linking) |
 | Axios | HTTP client |
@@ -98,6 +99,16 @@ frontend/
 - **UI Components**: Radix UI primitives, class-variance-authority, tailwind-merge
 - **Date Handling**: date-fns
 - **Blockchain**: `@stellar/stellar-sdk`, `@stellar/freighter-api`
+
+## TypeScript and Module Aliases
+
+- **TypeScript Version**: The workspace transitively resolves `typescript@6.0.3` (via peer dependencies). `ignoreDeprecations: "6.0"` in `tsconfig.json` suppresses deprecation notices for TypeScript 6.0.
+- **Path Aliases (`@/*`)**:
+  - `tsconfig.json`: Configures path mapping for TypeScript compiler (`tsc --noEmit`) and TypeScript language server.
+  - `jsconfig.json`: Configures path mapping for JavaScript IDE IntelliSense and code navigation.
+  - `next.config.mjs`: Configures the Webpack module bundler resolver during `next build` and `next dev`.
+  - `vitest.config.mjs`: Configures Vite module resolution for Vitest unit tests.
+- **Configuration Linting**: `npm run check:config` (integrated into `npm run lint`) validates that `tsconfig.json` and `jsconfig.json` contain no duplicate keys.
 
 ## Related Resources
 

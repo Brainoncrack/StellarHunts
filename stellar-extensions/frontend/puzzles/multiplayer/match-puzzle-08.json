@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "id": "match-claimable-refund",
+  "title": "Claimable Balance Refund",
+  "description": "Identify the safe Soroban refund pattern when a claim has already been fulfilled.",
+  "difficulty": "hard",
+  "match_tier": "advanced",
+  "type": "logic",
+  "content": {
+    "prompt": "A refund is requested once for a balance with a claimant. The first request succeeds and marks it claimed. Should a repeated identical request succeed?"
+  },
+  "solution": "No",
+  "solutionType": "plain",
+  "hint": "The balance is no longer available after it is claimed.",
+  "tags": ["stellar", "claimable-balances", "idempotency"],
+  "isActive": true,
+  "testCases": [
+    { "title": "Repeated claim", "input": { "claimed": true, "request": "refund" }, "expectedOutput": { "answer": "No" } },
+    { "title": "First claim", "input": { "claimed": false, "request": "refund" }, "expectedOutput": { "answer": "Yes" } },
+    { "title": "Wrong claimant", "input": { "claimed": false, "authorized": false }, "expectedOutput": { "answer": "No" } },
+    { "title": "Authorized claimant", "input": { "claimed": false, "authorized": true }, "expectedOutput": { "answer": "Yes" } },
+    { "title": "Expired claim", "input": { "claimed": false, "expired": true }, "expectedOutput": { "answer": "No" } }
+  ]
+}

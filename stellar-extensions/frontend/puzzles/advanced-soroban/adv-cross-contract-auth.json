@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "id": "adv-cross-contract-auth",
+  "title": "Authorize the Token Transfer",
+  "description": "A reward contract moves a fee from the player to the treasury through the Stellar asset contract. The call compiles and the token contract exists, yet every invocation panics with an authorization error.",
+  "difficulty": "hard",
+  "type": "code",
+  "content": {
+    "prompt": "The game contract invokes the token contract on the player's behalf. Which line must appear before the transfer so the player's signature is actually required?\n\npub fn claim_reward(env: Env, player: Address, token_id: Address, treasury: Address) {\n    let token = token::Client::new(&env, &token_id);\n    // Missing line here\n    token.transfer(&player, &treasury, &FEE);\n}",
+    "initialCode": "player.",
+    "language": "rust"
+  },
+  "solution": "player.require_auth()",
+  "solutionType": "plain",
+  "hint": "A cross-contract client call does not authorize anyone by itself. The calling contract must call `require_auth` on the address whose balance is debited, and it must do so before the transfer. Authorizing the token contract or the treasury cannot satisfy the player's authorization entry.",
+  "reward": {
+    "rewardId": "reward-adv-soroban-01",
+    "type": "points",
+    "metadata": { "points": 250, "badgeName": "Invocation Authorizer" }
+  },
+  "author": "StellarHunts Core",
+  "tags": ["soroban", "auth", "cross-contract", "security", "rust"],
+  "isActive": true,
+  "testCases": [
+    {
+      "title": "Player authorization requested",
+      "description": "The address whose funds move must authorize the invocation.",
+      "validationMode": "exact_match",
+      "input": { "answer": "player.require_auth()" },
+      "expectedOutput": { "correct": true }
+    },
+    {
+      "title": "Token contract cannot authorize the player",
+      "validationMode": "exact_match",
+      "input": { "answer": "token.require_auth()" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Treasury is not the debited address",
+      "validationMode": "exact_match",
+      "input": { "answer": "treasury.require_auth()" },
+      "expectedOutput": { "correct": false }
+    },
+    {
+      "title": "Invoker authorization does not cover the player",
+      "validationMode": "exact_match",
+      "input": { "answer": "env.invoker().require_auth()" },
+      "expectedOutput": { "correct": false }
+    }
+  ]
+}
